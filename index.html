@@ -57,9 +57,11 @@
                     header: true,
                     download: true,
                     complete: (results) => {
+                        console.log("CSV Data:", results.data); // Debugging line
                         resolve(results.data);
                     },
                     error: (error) => {
+                        console.error("Error parsing CSV:", error); // Debugging line
                         reject(error);
                     }
                 });
@@ -72,6 +74,7 @@
             const csvFile = 'quizII_G6.csv'; // Path to your CSV
             const data = await readCSV(csvFile);
             const result = search(data, formObject.searchtext);
+            console.log("Search Result:", result); // Debugging line
             createTable(result);
             document.getElementById("search-form").reset();
         }
