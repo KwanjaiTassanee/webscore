@@ -32,7 +32,7 @@
                                 <label for="searchtext">แจ้งคะแนน Quiz II คะแนนเต็ม 10 คะแนน</label>
                             </div>
                             <div class="form-group mx-sm-3 mb-2">
-                                <input type="text" class="form-control" id="searchtext" name="searchtext" placeholder="กรอกรหัส 6 ตัวอักษร" required>
+                                <input type="text" class="form-control" id="searchtext" name="searchtext" placeholder="กรอกรหัสผ่าน" required>
                             </div>
                             <button type="submit" class="btn btn-primary mb-2">ค้นหา</button>
                         </form>
@@ -77,8 +77,8 @@
         }
 
         function search(data, searchtext) {
-            return data.filter(row => row['D'] && row['D'].includes(searchtext))
-                .map(row => [row['A'], row['B'], row['C']]);
+            return data.filter(row => row['password'] && row['password'] === searchtext)
+                .map(row => [row['studentID'], row['name'], row['score']]);
         }
 
         function createTable(dataArray) {
