@@ -1,5 +1,5 @@
 function doGet() {
-  return HtmlService.createTemplateFromFile('Index').evaluate()
+  return HtmlService.createTemplateFromFile('index').evaluate()
     .setTitle('Quiz II - SA_สมทบ Aj.Kwan')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
