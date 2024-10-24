@@ -1,132 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <base target="_top">
-  <!-- Favicon -->
-  <link rel="icon" href="https://dorothydalton.com/wp-content/uploads/2019/06/score-768x576.png" type="image/png">
-  <!-- Google Fonts -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
-    integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/6a972cf3a7.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-
-  <style>
-    body {
-      font-family: "Mitr";
-    }
-
-    /* Hides the warning bar */
-    .warning-bar {
-      visibility: hidden;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz II - SA_สมทบ Aj.Kwan</title>
+    <link rel="icon" href="https://dorothydalton.com/wp-content/uploads/2019/06/score-768x576.png" type="image/png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/6a972cf3a7.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: "Mitr";
+        }
+    </style>
 </head>
 
 <body>
-  <iframe style="position: absolute; top:0; left:0;  height:100%; width:100%;border:0;"
-    src="https://script.google.com/macros/s/AKfycbz3ygJiiQb-jsMjUv2V2PC0_-20GEAh9N-5ccPziUeg7tfiyXY0orG9DfEq13nxahBe/exec">
-  <!-- <iframe
-  src="https://script.google.com/macros/s/AKfycbz3ygJiiQb-jsMjUv2V2PC0_-20GEAh9N-5ccPziUeg7tfiyXY0orG9DfEq13nxahBe/exec"
-  height="500"
-  width="1000"
-  style="border: none;">
-</iframe> -->
-
-  <div class="container">
-    <br>
-    <div class="row">
-      <div class="col-md-8 mx-auto">
-        <div class="card text-center">
-          <div class="card-header">
-            System Analysis and Design (Aj.Kwan) <br>การวิเคราะห์และออกแบบระบบสารสนเทศ
-          </div>
-          <div class="card-body">
-            <!-- ## ฟอร์มค้นหา ------------------------------------------------ -->
-            <form id="search-form" class="form-inline" onsubmit="handleFormSubmit(this)">
-              <!-- <form id="search-form" class="form-inline" onsubmit="handleFormSubmit(this)"> -->
-
-              <div class="form-group mb-2">
-                <label for="searchtext">แจ้งคะแนน Quiz II คะแนนเต็ม 10 คะแนน</label>
-              </div>
-              <div class="form-group mx-sm-3 mb-2">
-                <input type="text" class="form-control" id="searchtext" name="searchtext" placeholder="กรอกรหัส 6 ตัวอักษร">
-              </div>
-              <button type="submit" class="btn btn-primary mb-2">ค้นหา</button>
-            </form>
-            <!-- ## ปิดฟอร์ม ------------------------------------------------ -->
-          </div>
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card text-center">
+                    <div class="card-header">
+                        System Analysis and Design (Aj.Kwan) <br>การวิเคราะห์และออกแบบระบบสารสนเทศ
+                    </div>
+                    <div class="card-body">
+                        <form id="search-form" class="form-inline" onsubmit="handleFormSubmit(event)">
+                            <div class="form-group mb-2">
+                                <label for="searchtext">แจ้งคะแนน Quiz II คะแนนเต็ม 10 คะแนน</label>
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <input type="text" class="form-control" id="searchtext" name="searchtext" placeholder="กรอกรหัส 6 ตัวอักษร" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">ค้นหา</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+        <br>
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div id="search-results" class="table-responsive">
+                    <!-- Results will be displayed here -->
+                </div>
+            </div>
+        </div>
     </div>
 
-    <br>
-
-    <div class="row">
-      <div class="col-md-8 mx-auto">
-        <!-- ## สร้างตาราง ------------------------------------------------ -->
-        <div id="search-results" class="table-responsive">
-          <!-- แสดงข้อมูลที่นี่ -->
-        </div>
-        <!-- ## จบตาราง ------------------------------------------------ -->
-      </div>
-    </div>
-  </div>
-
-  <!--## JAVASCRIPT ---------------------------------------------------- -->
-  <script>
-    window.addEventListener("load", preventFormSubmit, true);
-
-            function preventFormSubmit() {
-                var forms = document.querySelectorAll('form');
-                for (var i = 0; i < forms.length; i++) {
-                    forms[i].addEventListener('submit', function(event) {
-                        event.preventDefault();
-                    });
-                }
-            }
-
-            // ทำการส่งค่าจากฟอร์ม
-            function handleFormSubmit(formObject) {
-                google.script.run.withSuccessHandler(createTable).processForm(formObject);
-                document.getElementById("search-form").reset();
-            }
-
-            // สร้างตารางและข้อมูลในตาราง
-            function createTable(dataArray) {
-                if (dataArray && dataArray.length != 0) {
-                    var result = "<table class='table table-sm table-striped table-hover' id='dtable'>" +
-                                 "<thead style='white-space: nowrap'>" +
-                                 "<tr>" +
-                                 "<th scope='col'>Student ID</th>" +
-                                 "<th scope='col'>ชื่อ-นามสกุล</th>" +
-                                 "<th scope='col'>Score</th>" +
-                                 "</tr>" +
-                                 "</thead>";
-                    for (var i = 0; i < dataArray.length; i++) {
-                        result += "<tr>";
-                        for (var j = 0; j < dataArray[i].length; j++) {
-                            result += "<td>" + dataArray[i][j] + "</td>";
-                        }
-                        result += "</tr>";
+    <script>
+        async function readCSV(file) {
+            return new Promise((resolve, reject) => {
+                Papa.parse(file, {
+                    header: true,
+                    download: true,
+                    complete: (results) => {
+                        resolve(results.data);
+                    },
+                    error: (error) => {
+                        reject(error);
                     }
-                    result += "</table>";
-                    document.getElementById('search-results').innerHTML = result;
-                } else {
-                    document.getElementById('search-results').innerHTML = "Data Not Found!!!!";
-                }
-            }
-  </script>
+                });
+            });
+        }
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous">
-  </script>
-    </iframe>
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            const formObject = { searchtext: document.getElementById('searchtext').value };
+            const csvFile = 'path/to/your/quizII_G6.csv'; // Adjust the path to your CSV file
+            const data = await readCSV(csvFile);
+            const result = search(data, formObject.searchtext);
+            createTable(result);
+            document.getElementById("search-form").reset();
+        }
+
+        function search(data, searchtext) {
+            return data.filter(row => row['D'] && row['D'].includes(searchtext))
+                .map(row => [row['A'], row['B'], row['C']]);
+        }
+
+        function createTable(dataArray) {
+            const resultsDiv = document.getElementById('search-results');
+            if (dataArray.length > 0) {
+                let result = "<table class='table table-sm table-striped table-hover'><thead><tr><th>Student ID</th><th>ชื่อ-นามสกุล</th><th>Score</th></tr></thead><tbody>";
+                dataArray.forEach(row => {
+                    result += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td></tr>`;
+                });
+                result += "</tbody></table>";
+                resultsDiv.innerHTML = result;
+            } else {
+                resultsDiv.innerHTML = "Data Not Found!!!!";
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
