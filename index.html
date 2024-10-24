@@ -71,8 +71,7 @@
         async function handleFormSubmit(event) {
             event.preventDefault();
             const formObject = { searchtext: document.getElementById('searchtext').value };
-            // const csvFile = 'quizII_G6.csv'; // Path to your CSV
-            const csvFile = 'https://docs.google.com/spreadsheets/d/1ZBNXlrx4_ghQpv0N1i2q1-h_Gg3zP7QCxILsE_DaHkA/edit?usp=sharing';
+            const csvFile = 'https://docs.google.com/spreadsheets/d/1-g3FJgcWBGVxSdI20HkdSk3K24gZk3KH5TcZrSwm1bk/gviz/tq?tqx=out:csv'; // Replace with your Google Sheet ID
             const data = await readCSV(csvFile);
             const result = search(data, formObject.searchtext);
             console.log("Search Result:", result); // Debugging line
