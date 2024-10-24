@@ -69,7 +69,7 @@
         async function handleFormSubmit(event) {
             event.preventDefault();
             const formObject = { searchtext: document.getElementById('searchtext').value };
-            const csvFile = 'quizII_G6.csv'; // Adjust the path to your CSV file
+            const csvFile = 'quizII_G6.csv'; // Path to your CSV
             const data = await readCSV(csvFile);
             const result = search(data, formObject.searchtext);
             createTable(result);
