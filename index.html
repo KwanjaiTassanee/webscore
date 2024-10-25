@@ -34,6 +34,14 @@
                             <div class="form-group mx-sm-3 mb-2">
                                 <input type="text" class="form-control" id="searchtext" name="searchtext" placeholder="กรอกรหัสผ่าน" required>
                             </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <select class="form-control" id="classSelect">
+                                    <option value="">เลือกชั้นเรียน</option>
+                                    <option value="ClassA">สส 1/1</option>
+                                    <option value="ClassB">สส 1/2</option>
+                                    <option value="สส.1/5 (สมทบ)">สส.1/5 (สมทบ)</option>
+                                </select>
+                            </div>
                             <button type="submit" class="btn btn-primary mb-2">ค้นหา</button>
                         </form>
                     </div>
@@ -70,18 +78,21 @@
 
         async function handleFormSubmit(event) {
             event.preventDefault();
-            const formObject = { searchtext: document.getElementById('searchtext').value };
+            const searchtext = document.getElementById('searchtext').value;
+            const selectedClass = document.getElementById('classSelect').value;
             const csvFile = 'https://docs.google.com/spreadsheets/d/1-g3FJgcWBGVxSdI20HkdSk3K24gZk3KH5TcZrSwm1bk/gviz/tq?tqx=out:csv'; // Replace with your Google Sheet ID
             const data = await readCSV(csvFile);
-            const result = search(data, formObject.searchtext);
+            const result = search(data, searchtext, selectedClass);
             console.log("Search Result:", result); // Debugging line
             createTable(result);
             document.getElementById("search-form").reset();
         }
 
-        function search(data, searchtext) {
-            return data.filter(row => row['password'] && row['password'] === searchtext)
-                .map(row => [row['studentID'], row['name'], row['score']]);
+        function search(data, searchtext, selectedClass) {
+            return data.filter(row => 
+                row['password'] && row['password'] === searchtext &&
+                (!selectedClass || row['class'] === selectedClass)
+            ).map(row => [row['studentID'], row['name'], row['score']]);
         }
 
         function createTable(dataArray) {
