@@ -32,12 +32,12 @@
                             <div class="form-group mx-sm-3 mb-2">
                                 <select class="form-control" id="classSelect" required>
                                     <option value="">เลือกกลุ่มเรียน</option>
-                                    <option value="ตล2-1 4 ปี ภาคปกติ">G10_Friday_ตล2-1 4 ปี ภาคปกติ</option>
-                                    <option value="ตล2-2 4 ปี ภาคปกติ">G11_Thursday_ตล2-2 4 ปี ภาคปกติ</option>
-                                    <option value="ตล.2-3 4 ปี ภาคปกติ">G12_Tuesday_ตล.2-3 4 ปี ภาคปกติ</option>
-                                    <option value="ตล1-1_เทียบโอน">G13_Tuesday_ตล1-1_เทียบโอน</option>
-                                    <option value="ตล1-2_เทียบโอน">G14_Wednesday_ตล1-2_เทียบโอน</option>
-                                    <option value="ตล1-4_เทียบโอน ภาคสมทบ">G16_Sunday_ตล1-4_เทียบโอน ภาคสมทบ</option>
+                                    <option value="G10_Friday">G10_Friday</option>
+                                    <option value="G11_Thursday">G11_Thursday</option>
+                                    <option value="G12_Tuesday">G12_Tuesday</option>
+                                    <option value="G13_Tuesday">G13_Tuesday</option>
+                                    <option value="G14_Wednesday">G14_Wednesday</option>
+                                    <option value="G16_Sunday">G16_Sunday</option>
                                 </select>
                             </div>
                             <div class="form-group mx-sm-3 mb-2">
@@ -78,12 +78,17 @@
 
         async function handleFormSubmit(event) {
             event.preventDefault();
-            const searchtext = document.getElementById('searchtext').value;
-            const selectedClass = document.getElementById('classSelect').value;
+            const searchtext = document.getElementById('searchtext').value.trim();
+            const selectedClass = document.getElementById('classSelect').value.trim();
             const data = await fetchCSVData();
             
+            console.log("Fetched Data:", data);
+            console.log("Input Password:", searchtext);
+            console.log("Selected Classroom:", selectedClass);
+            
             const result = data.filter(row => 
-                row['password'] === searchtext && row['classroom'] === selectedClass
+                row['password']?.trim() === searchtext && 
+                row['classroom']?.trim() === selectedClass
             ).map(row => [row['classroom'], row['studentID'], row['name'], row['score'], row['ref']]);
             
             displayResults(result);
