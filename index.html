@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz II - SA_สมทบ Aj.Kwan</title>
+    <title>Quiz I - Data Visualisation Aj.Kwan</title>
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2972/2972160.png" type="image/png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
@@ -34,12 +34,12 @@
                             <div class="form-group mx-sm-3 mb-2">
                                 <select class="form-control" id="classSelect">
                                     <option value="">เลือกกลุ่มเรียน</option>
-                                    <option value="สส.3/1 4ปี">G1_FridayMorning(สส.3/1 4ปี)</option>
-                                    <option value="สส.1/1">G2_FridayAfternoon(สส.1/1)</option>
-                                    <option value="สส.1/2">G3_ThursdayEvening(สส.1/2)</option>
-                                    <option value="สส.1/3">G4_Tuesday(สส.1/3)</option>
-                                    <option value="สส.1/4">G5_ThursdayAfternoon(สส.1/4)</option>
-                                    <option value="สส.1/5 (สมทบ)">G6_Saturday(สส.1/5 (สมทบ)</option>
+                                    <option value="ตล2-1 4 ปี ภาคปกติ">G10_Friday_ตล2-1 4 ปี ภาคปกติ</option>
+                                    <option value="ตล2-2 4 ปี ภาคปกติ">G11_Thursday_ตล2-2 4 ปี ภาคปกติ</option>
+                                    <option value="ตล.2-3 4 ปี ภาคปกติ">G12_Tuesaday(ตอนเย็น)_ตล.2-3 4 ปี ภาคปกติ</option>
+                                    <option value="ตล1-1_เทียบโอน">G13_Tuesaday(ตอนเที่ยง)_ ตล1-1_เทียบโอน</option>
+                                    <option value="ตล1-2_เทียบโอน">G14_Wedesday_ตล1-2_เทียบโอน</option>
+                                    <option value="ตล1-4_เทียบโอน ภาคสมทบ">G16_Sunday_ตล1-4_เทียบโอน ภาคสมทบ</option>
                                 </select>
                             </div>
                             <br>
@@ -104,9 +104,9 @@
         function createTable(dataArray) {
             const resultsDiv = document.getElementById('search-results');
             if (dataArray.length > 0) {
-                let result = "<table class='table table-sm table-striped table-hover'><thead><tr><th>Room</th><th>Student ID</th><th>ชื่อ-นามสกุล</th><th>Score</th></tr></thead><tbody>";
+                let result = "<table class='table table-sm table-striped table-hover'><thead><tr><th>Room</th><th>Student ID</th><th>ชื่อ-นามสกุล</th><th>Score</th><th>หมายเหตุ</th></tr></thead><tbody>";
                 dataArray.forEach(row => {
-                    result += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`;
+                    result += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td><td>${row[5]}</td></tr>`;
                 });
                 result += "</tbody></table>";
                 resultsDiv.innerHTML = result;
