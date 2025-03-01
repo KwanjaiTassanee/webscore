@@ -4,14 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz I - Data Visualization</title>
+    <title>Quiz I - Data Visualisation Aj.Kwan</title>
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2972/2972160.png" type="image/png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mitr">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/6a972cf3a7.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <style>
-        body { font-family: "Mitr"; }
+        body {
+            font-family: "Mitr";
+        }
     </style>
 </head>
 
@@ -22,27 +24,29 @@
             <div class="col-md-8 mx-auto">
                 <div class="card text-center">
                     <div class="card-header">
-                        Data Visualization - Quiz I Results
+                        Data Visualization (Aj.Kwan) <br>การแสดงข้อมูลด้วยแผนภาพ
                     </div>
                     <div class="card-body">
-                        <form id="search-form" onsubmit="handleFormSubmit(event)">
+                        <form id="search-form" class="form-inline" onsubmit="handleFormSubmit(event)">
                             <div class="form-group mb-2">
-                                <label>แจ้งคะแนน Quiz I (เต็ม 10 คะแนน)</label>
+                                <label for="searchtext">แจ้งคะแนน Quiz I คะแนนเต็ม 10 คะแนน</label>
                             </div>
                             <div class="form-group mx-sm-3 mb-2">
-                                <select class="form-control" id="classSelect" required>
+                                <select class="form-control" id="classSelect">
                                     <option value="">เลือกกลุ่มเรียน</option>
-                                    <option value="G10_Friday_ตล2-1 4 ปี ภาคปกติ">G10_Friday_ตล2-1 4 ปี ภาคปกติ</option>
-                                    <option value="G11_Thursday_ตล2-2 4 ปี ภาคปกติ">G11_Thursday_ตล2-2 4 ปี ภาคปกติ</option>
-                                    <option value="G12_Tuesaday(ตอนเย็น)_ตล.2-3 4 ปี ภาคปกติ">G12_Tuesaday(ตอนเย็น)_ตล.2-3 4 ปี ภาคปกติ</option>
-                                    <option value="G13_Tuesaday(ตอนเที่ยง)_ตล1-1_เทียบโอน">G13_Tuesaday(ตอนเที่ยง)_ตล1-1_เทียบโอน</option>
-                                    <option value="G14_Wedesday_ตล1-2_เทียบโอน">G14_Wedesday_ตล1-2_เทียบโอน</option>
-                                    <option value="G16_Sunday">G16_Sunday</option>
+                                    <option value="G10_Friday">G10_Friday_ตล2-1 4 ปี ภาคปกติ</option>
+                                    <option value="G11_Thursday">G11_Thursday_ตล2-2 4 ปี ภาคปกติ</option>
+                                    <option value="G12_Tuesday(evening)">G12_Tuesaday(ตอนเย็น)_ตล.2-3 4 ปี ภาคปกติ</option>
+                                    <option value="G13_Tuesday(lunch)">G13_Tuesaday(ตอนเที่ยง)_ ตล1-1_เทียบโอน</option>
+                                    <option value="G14_Wedesday">G14_Wedesday_ตล1-2_เทียบโอน</option>
+                                    <option value="G16_Sunday">G16_Sunday_ตล1-4_เทียบโอน ภาคสมทบ</option>
                                 </select>
                             </div>
+                            <br>
                             <div class="form-group mx-sm-3 mb-2">
                                 <input type="text" class="form-control" id="searchtext" name="searchtext" placeholder="กรอกรหัสผ่าน" required>
                             </div>
+                            
                             <button type="submit" class="btn btn-primary mb-2">ค้นหา</button>
                         </form>
                     </div>
@@ -52,67 +56,81 @@
         <br>
         <div class="row">
             <div class="col-md-8 mx-auto">
-                <div id="search-results" class="table-responsive text-center"></div>
+                <div id="search-results" class="table-responsive">
+                    <!-- Results will be displayed here -->
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        async function fetchCSVData() {
-            const csvURL = 'https://docs.google.com/spreadsheets/d/1N02iv-ueL5WZRWTL8AWz-rf3JQCo4a0V7nFvL7q8vzc/gviz/tq?tqx=out:csv';
-            try {
-                const response = await fetch(csvURL);
-                const csvText = await response.text();
-                return new Promise((resolve, reject) => {
-                    Papa.parse(csvText, {
-                        header: true,
-                        complete: results => resolve(results.data),
-                        error: error => reject(error)
-                    });
+        async function readCSV(file) {
+            return new Promise((resolve, reject) => {
+                Papa.parse(file, {
+                    header: true,
+                    download: true,
+                    complete: (results) => {
+                        console.log("CSV Data:", results.data); // Debugging line
+                        resolve(results.data);
+                    },
+                    error: (error) => {
+                        console.error("Error parsing CSV:", error); // Debugging line
+                        reject(error);
+                    }
                 });
-            } catch (error) {
-                console.error("Error fetching CSV:", error);
-                return [];
-            }
+            });
         }
 
         async function handleFormSubmit(event) {
             event.preventDefault();
-            const searchtext = document.getElementById('searchtext').value.trim();
-            const selectedClass = document.getElementById('classSelect').value.trim();
-            const data = await fetchCSVData();
-            
-            console.log("Fetched Data:", data);
-            console.log("Input Password:", searchtext);
-            console.log("Selected Classroom:", selectedClass);
-            
-            const result = data.filter(row => 
-                row['password']?.trim() === searchtext && 
-                row['classroom']?.trim() === selectedClass
-            ).map(row => [row['classroom'], row['studentID'], row['name'], row['score'], row['ref']]);
-            
-            displayResults(result);
+            const searchtext = document.getElementById('searchtext').value;
+            const selectedClass = document.getElementById('classSelect').value;
+            const csvFile = 'https://docs.google.com/spreadsheets/d/1N02iv-ueL5WZRWTL8AWz-rf3JQCo4a0V7nFvL7q8vzc/gviz/tq?tqx=out:csv'; // Replace with your Google Sheet ID
+            const data = await readCSV(csvFile);
+            const result = search(data, searchtext, selectedClass);
+            console.log("Search Result:", result); // Debugging line
+            createTable(result);
             document.getElementById("search-form").reset();
         }
 
-        function displayResults(dataArray) {
+        function search(data, searchtext, selectedClass) {
+    return data.filter(row => 
+        (!searchtext || row['password'] === searchtext) && // Only check password if searchtext is provided
+        (!selectedClass || row['classroom'] === selectedClass) // Only check classroom if selectedClass is provided
+    ).map(row => [row['classroom'], row['studentID'], row['name'], row['score'], row['ref']]);
+}
+
+
+        function createTable(dataArray) {
             const resultsDiv = document.getElementById('search-results');
             if (dataArray.length > 0) {
-                let resultTable = `<table class='table table-striped table-hover'>
-                    <thead><tr><th>Room</th><th>Student ID</th><th>ชื่อ-นามสกุล</th><th>Score</th><th>หมายเหตุ</th></tr></thead>
-                    <tbody>`;
+                let result = "<table class='table table-sm table-striped table-hover'><thead><tr><th>Room</th><th>Student ID</th><th>ชื่อ-นามสกุล</th><th>Score</th><th>หมายเหตุ</th></tr></thead><tbody>";
                 dataArray.forEach(row => {
-                    resultTable += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td><td>${row[4]}</td></tr>`;
+                    result += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td><td>${row[4]}</td></tr>`;
                 });
-                resultTable += "</tbody></table>";
-                resultsDiv.innerHTML = resultTable;
+                result += "</tbody></table>";
+                resultsDiv.innerHTML = result;
             } else {
-                resultsDiv.innerHTML = "<div class='alert alert-danger'>Data Not Found!!!!</div>";
+                resultsDiv.innerHTML = "Data Not Found!!!!";
             }
         }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    </script>
+    <script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '673ee0892753e65a53c5dfc8' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production'
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
 </body>
 
 </html>
