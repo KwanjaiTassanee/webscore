@@ -97,7 +97,7 @@
     return data.filter(row => 
         (!searchtext || row['password'] === searchtext) && // Only check password if searchtext is provided
         (!selectedClass || row['classroom'] === selectedClass) // Only check classroom if selectedClass is provided
-    ).map(row => [row['classroom'], row['studentID'], row['name'], row['score']]);
+    ).map(row => [row['classroom'], row['studentID'], row['name'], row['score'], row['ref']]);
 }
 
 
