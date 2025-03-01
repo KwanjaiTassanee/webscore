@@ -37,7 +37,7 @@
                                     <option value="ตล2-1 4 ปี ภาคปกติ">G10_Friday_ตล2-1 4 ปี ภาคปกติ</option>
                                     <option value="ตล2-2 4 ปี ภาคปกติ">G11_Thursday_ตล2-2 4 ปี ภาคปกติ</option>
                                     <option value="ตล.2-3 4 ปี ภาคปกติ">G12_Tuesaday(ตอนเย็น)_ตล.2-3 4 ปี ภาคปกติ</option>
-                                    <option value="ตล1-1_เทียบโอน">G13_Tuesaday(ตอนเที่ยง)_ ตล1-1_เทียบโอน</option>
+                                    <option value="ตล1-1_เทียบโอน">G13_Tuesaday(ตอนเที่ยง)_ตล1-1_เทียบโอน</option>
                                     <option value="ตล1-2_เทียบโอน">G14_Wedesday_ตล1-2_เทียบโอน</option>
                                     <option value="ตล1-4_เทียบโอน ภาคสมทบ">G16_Sunday_ตล1-4_เทียบโอน ภาคสมทบ</option>
                                 </select>
@@ -85,7 +85,7 @@
             event.preventDefault();
             const searchtext = document.getElementById('searchtext').value;
             const selectedClass = document.getElementById('classSelect').value;
-            const csvFile = 'https://docs.google.com/spreadsheets/d/1-g3FJgcWBGVxSdI20HkdSk3K24gZk3KH5TcZrSwm1bk/gviz/tq?tqx=out:csv'; // Replace with your Google Sheet ID
+            const csvFile = 'https://docs.google.com/spreadsheets/d/1N02iv-ueL5WZRWTL8AWz-rf3JQCo4a0V7nFvL7q8vzc/gviz/tq?tqx=out:csv'; // Replace with your Google Sheet ID
             const data = await readCSV(csvFile);
             const result = search(data, searchtext, selectedClass);
             console.log("Search Result:", result); // Debugging line
