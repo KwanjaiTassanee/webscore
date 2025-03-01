@@ -85,7 +85,8 @@
             event.preventDefault();
             const searchtext = document.getElementById('searchtext').value;
             const selectedClass = document.getElementById('classSelect').value;
-            const csvFile = 'https://docs.google.com/spreadsheets/d/1N02iv-ueL5WZRWTL8AWz-rf3JQCo4a0V7nFvL7q8vzc/gviz/tq?tqx=out:csv'; // Replace with your Google Sheet ID
+            const csvFile = 'https://docs.google.com/spreadsheets/d/1N02iv-ueL5WZRWTL8AWz-rf3JQCo4a0V7nFvL7q8vzc/edit?usp=sharing';
+            // Replace with your Google Sheet ID
             const data = await readCSV(csvFile);
             const result = search(data, searchtext, selectedClass);
             console.log("Search Result:", result); // Debugging line
